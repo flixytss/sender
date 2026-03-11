@@ -11,7 +11,7 @@ Sender is a binary that helps you to send files to a selected ip.
 
 The requeriments are:
 - argumentsea
-- scoksea
+- scoksea  
 I made both of those libraries, But the libraries are in the following links:
 - https://github.com/flixytss/Argumentsea
 - https://github.com/flixytss/scoksea
