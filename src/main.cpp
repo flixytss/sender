@@ -50,17 +50,17 @@ int main(int argc, char** argv) {
         connect_socket(&client);
 
         int size = TO_INT(buffer.size());
-        s_write(client, TO_SOCKET_MESSAGE(size));
+        s_write(client, TO_SOCKET_MESSAGE(size), sizeof(size));
         size = TO_INT(std::filesystem::path(filepath).filename().string().size());
-        s_write(client, TO_SOCKET_MESSAGE(size));
+        s_write(client, TO_SOCKET_MESSAGE(size), sizeof(size));
         
         for (char c : std::filesystem::path(filepath).filename().string()) {
             int cc = TO_INT(c);
-            s_write(client, TO_SOCKET_MESSAGE(cc));
+            s_write(client, TO_SOCKET_MESSAGE(cc), sizeof(cc));
         }
         for (char c : buffer) {
             int cc = TO_INT(c);
-            s_write(client, TO_SOCKET_MESSAGE(cc));
+            s_write(client, TO_SOCKET_MESSAGE(cc), sizeof(cc));
         }
 
         closesocket(client);
@@ -84,24 +84,24 @@ int main(int argc, char** argv) {
         std::println("Ip {} port {} connected", info.ip, info.port);
 
         int size = 0;
-        s_read(client, TO_SOCKET_MESSAGE(size));
+        s_read(client, TO_SOCKET_MESSAGE(size), sizeof(size));
         size = FROM_INT(size);
         std::println("File size: {} bytes", size);
         int size_name = 0;
-        s_read(client, TO_SOCKET_MESSAGE(size_name));
+        s_read(client, TO_SOCKET_MESSAGE(size_name), sizeof(size_name));
         size_name = FROM_INT(size_name);
 
         std::string buffer;
         std::string name;
         for (int i = 0; i < size_name; i++) {
             int c = 0;
-            s_read(client, TO_SOCKET_MESSAGE(c));
+            s_read(client, TO_SOCKET_MESSAGE(c), sizeof(c));
             name += FROM_INT(c);
         }
         std::println("File name: {}", name);
         for (int i = 0; i < size; i++) {
             int c = 0;
-            s_read(client, TO_SOCKET_MESSAGE(c));
+            s_read(client, TO_SOCKET_MESSAGE(c), sizeof(c));
             buffer += FROM_INT(c);
         }
         std::ofstream f(name);
